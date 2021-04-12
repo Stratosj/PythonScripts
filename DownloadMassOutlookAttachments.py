@@ -10,6 +10,7 @@ attachment_list = [] # Used to compare file_name values to previously downloaded
 
 
 def download_attachments():
+    """Downloads all attachments in the (default) inbox folder"""
     for message in MESSAGES:
         if message.Unread:
             print(f"Scanning unread message '{message.Subject}' for excel attachments...")
@@ -36,7 +37,7 @@ def file_rename(original_file_name):
 
 
 def save_file(attachment, new_file_name):
-    "Saves file with original or new_name to prevent overrides"
+    """Saves file with original or new_name to prevent overrides"""
     attachment.SaveAsFile(os.path.join(path, new_file_name))
     attachment_list.append(new_file_name)
 
