@@ -51,16 +51,4 @@ if user_ready.lower() == "r":
             file.move_to_directory()
             file_count += 1
 
-input(f"""
-{file_count} files sorted based on the oldest date found.
-
-       _=,_
-    o_/6 /#\.
-    \__ |##/
-     ='|--|
-       /   #'-.
-       \#|_   _'-. /
-        |/ \_( # |" 
-       C/ ,--___/  💩
-
-Brought to you by Iriko.""")
+input(f"{file_count} files sorted based on the oldest date found.")
