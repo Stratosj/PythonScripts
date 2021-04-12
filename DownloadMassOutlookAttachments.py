@@ -2,16 +2,15 @@ import os
 import win32com.client
 import random
 
-path = os.getcwd()
-outlook = win32com.client.Dispatch("Outlook.Application").GetNamespace("MAPI")
-inbox = outlook.GetDefaultFolder(6) # 6 Is the default inbox folder, it can be changed, e.g. 5 = Sent mailbox
-messages = inbox.Items
-
+PATH = os.getcwd()
+OUTLOOK = win32com.client.Dispatch("Outlook.Application").GetNamespace("MAPI")
+INBOX = outlook.GetDefaultFolder(6) # 6 Is the default inbox folder, it can be changed, e.g. 5 = Sent mailbox.
+MESSAGES = INBOX.Items
 attachment_list = [] # Used to compare file_name values to previously downloaded files (only current que)
 
 
 def download_attachments():
-    for message in messages:
+    for message in MESSAGES:
         if message.Unread:
             print(f"Scanning unread message '{message.Subject}' for excel attachments...")
             attachments = message.Attachments
@@ -27,7 +26,6 @@ def file_rename(original_file_name):
     Takes original file name as input."""
     original_file_name = original_file_name.lower()
     copy_count = 0
-    # if ".xls" in original_file_name:  # got rid of this in case someone sends PDF or someone
     if original_file_name in attachment_list:
         while original_file_name in attachment_list:
             copy_count += 1
@@ -40,9 +38,7 @@ def file_rename(original_file_name):
 def save_file(attachment, new_file_name):
     "Saves file with original or new_name to prevent overrides"
     attachment.SaveAsFile(os.path.join(path, new_file_name))
-    print(f"Saving file as {new_file_name}.")
     attachment_list.append(new_file_name)
-    print(f"Updated attachment_list is: {attachment_list}.")
 
 
 input("Please make sure all the emails you want to download are UNREAD.")
