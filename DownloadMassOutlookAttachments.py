@@ -8,6 +8,8 @@ inbox = outlook.GetDefaultFolder(5) # 6 Is the default inbox folder, it can be c
 messages = inbox.Items
 attachment_list = []
 
+# TODO: Change to functions and clean up this mess.
+# TODO: Giver user ability to select folder?
 
 def saveattachments():
     for message in messages:
