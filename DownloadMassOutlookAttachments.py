@@ -1,10 +1,11 @@
 import os
 import win32com.client
 import random
+import tkinter
 
-PATH = os.getcwd()
+path = os.getcwd()
 OUTLOOK = win32com.client.Dispatch("Outlook.Application").GetNamespace("MAPI")
-INBOX = outlook.GetDefaultFolder(6) # 6 Is the default inbox folder, it can be changed, e.g. 5 = Sent mailbox.
+INBOX = OUTLOOK.GetDefaultFolder(6) # 6 Is the default inbox folder, it can be changed, e.g. 5 = Sent mailbox.
 MESSAGES = INBOX.Items
 attachment_list = [] # Used to compare file_name values to previously downloaded files (only current que)
 
@@ -24,13 +25,21 @@ def download_attachments():
                 
 def file_rename(original_file_name):
     """Renames files that were already downloaded before.
-    Takes original file name as input."""
+    Also removes any banned characters (["#", ","]) 
+    Takes original file name as input.
+    """
     original_file_name = original_file_name.lower()
+    banned_characters = ["#", ","]
+    for letter in original_file_name:
+        if letter in banned_characters:
+            letter_index = original_file_name.index(letter)
+            new_character = '_'
+            original_file_name = original_file_name[:letter_index] + new_character + original_file_name[letter_index+1:]
     copy_count = 0
     if original_file_name in attachment_list:
         while original_file_name in attachment_list:
             copy_count += 1
-            original_file_name = f"#{copy_count}#{original_file_name}"
+            original_file_name = f"{copy_count}-{original_file_name}"
         return original_file_name
     else:
         return original_file_name
