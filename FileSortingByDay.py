@@ -38,7 +38,7 @@ class Picture:
         # TODO: Check if file exists in folder?
         
 
-# TODO: Doesn't override or return any error if file is already in folder.
+# TODO: Doesn't override nor return any error if file is already in folder.
 
 print("Are you sure you want to run this script? All the files in the same folder as the .exe will be sorted into folders by date.\nThere is no (easy) way to reverse this process.")
 user_ready = input("Enter 'R' if you want to run this script or anything else to quit.")
@@ -51,4 +51,39 @@ if user_ready.lower() == "r":
             file.move_to_directory()
             file_count += 1
 
-input(f"{file_count} files sorted based on the oldest date found.")
+input(f"""
+*woof* I sorted {file_count} files based on the oldest date found in the file for you.
+
+
+           ____,'`-, 
+      _,--'   ,/::.; 
+   ,-'       ,/::,' `---.___        ___,_ 
+   |       ,:';:/        ;'"`;"`--./ ,-^.;--. 
+   |:     ,:';,'         '         `.   ;`   `-. 
+    \:.,:::/;/ -:.                   `  | `     `-. 
+     \:::,'//__.;  ,;  ,  ,  :.`-.   :. |  ;       :. 
+      \,',';/O)^. :'  ;  :   '__` `  :::`.       .:' ) 
+      |,'  |\__,: ;      ;  '/O)`.   :::`;       ' ,' 
+           |`--''            \__,' , ::::(       ,' 
+           `    ,            `--' ,: :::,'\   ,-' 
+            | ,;         ,    ,::'  ,:::   |,' 
+            |,:        .(          ,:::|   ` 
+            ::'_   _   ::         ,::/:| 
+           ,',' `-' \   `.      ,:::/,:| 
+          | : _  _   |   '     ,::,' ::: 
+          | \ O`'O  ,',   ,    :,'   ;:: 
+           \ `-'`--',:' ,' , ,,'      :: 
+            ``:.:.__   ',-','        ::' 
+               `--.__, ,::.         ::' 
+                   |:  ::::.       ::' 
+                   |:  ::::::    ,::' 
+
+
+
+▄▄▌         ▐ ▄  ▄▄ •     ▄▄▌  ▪   ▌ ▐·▄▄▄ .    ▄ •▄  ▄▄▄· ▄▄▄        
+██•  ▪     •█▌▐█▐█ ▀ ▪    ██•  ██ ▪█·█▌▀▄.▀·    █▌▄▌▪▐█ ▀█ ▀▄ █·▪     
+██▪   ▄█▀▄ ▐█▐▐▌▄█ ▀█▄    ██▪  ▐█·▐█▐█•▐▀▀▪▄    ▐▀▀▄·▄█▀▀█ ▐▀▀▄  ▄█▀▄ 
+▐█▌▐▌▐█▌.▐▌██▐█▌▐█▄▪▐█    ▐█▌▐▌▐█▌ ███ ▐█▄▄▌    ▐█.█▌▐█ ▪▐▌▐█•█▌▐█▌.▐▌
+.▀▀▀  ▀█▄▀▪▀▀ █▪·▀▀▀▀     .▀▀▀ ▀▀▀. ▀   ▀▀▀     ·▀  ▀ ▀  ▀ .▀  ▀ ▀█▄▀▪
+
+""")
