@@ -1,15 +1,13 @@
 import os
 import time
 from pathlib import Path
-import shutil
-import fnmatch
 from datetime import datetime
 from PIL import Image
 from PIL.ExifTags import TAGS
 
 
 # TODO: Check if same logic applies as in Excel date comparison
-# TODO: Adjust for video files (problematic - many formats, get sample files)
+# TODO: Is there any other file date accessible (encoding date? How to access it?)
 
 FILE_LIST = os.listdir()
 CURRENT_DIR = os.getcwd()
@@ -37,10 +35,8 @@ class Picture:
             ret[decoded] = value
         return ret
 
-    # TODO: Do this only for images, errors happen if presented with file like MP4
-    # TODO: Test on other images that do not have date_taken
-    # TODO: Find out if this is actualy local time or if it's possible to conver it (changing line 53 to .localtime does not work) 
-    def image_date(self, fn): # -- gracefully stolen from: https://orthallelous.wordpress.com/2015/04/19/extracting-date-and-time-from-images-with-python/ 
+ 
+    def image_date(self, fn): # TODO: THIS ONLY WORKS FOR IMAGES
         """Returns the date and time from image(if available)"""
         TTags = [('DateTimeOriginal', 'SubsecTimeOriginal'),  # when img taken
         ('DateTimeDigitized', 'SubsecTimeDigitized'),  # when img stored digitally
