@@ -3,9 +3,13 @@ import time
 from pathlib import Path
 import shutil
 import fnmatch
+from datetime import datetime
+from PIL import Image
+from PIL.ExifTags import TAGS
+
 
 # TODO: Check if same logic applies as in Excel date comparison
-# TODO: Is there any other file date accessible (encoding date? How to access it?)
+# TODO: Adjust for video files (problematic - many formats, get sample files)
 
 FILE_LIST = os.listdir()
 CURRENT_DIR = os.getcwd()
@@ -14,22 +18,52 @@ class Picture:
   
   
     def __init__(self, address, name, time_created, time_modified): # object constructer
-        self.name = name # name of the file
-        self.address = address # adress of the current working directory
-        self.time_created = time_created # file time created
-        self.time_modified = time_modified # file time modified
-        self.oldest_time = self.find_oldest_time() # compares time created and time modified and returns the older one
+        self.name = name
+        self.address = address
+        self.time_created = time_created 
+        self.time_modified = time_modified 
+        self.fn = f"{self.address}\\{self.name}"
+        self.time_taken = self.image_date(fn = self.fn)
+        self.all_times = [self.time_created, self.time_modified, self.time_taken]
+        self.oldest_time = self.find_oldest_time() # returns min date from all dates found
  
- 
-    def find_oldest_time(self):
-        if self.time_modified > self.time_created: 
-            oldest_time = time.strftime('%Y%m%d', time.localtime(self.time_created)) # must use .localtime (if .gmtime is used it returns shifted value for some days)
-            return oldest_time
-        elif self.time_modified <= self.time_created: 
-            oldest_time = time.strftime('%Y%m%d', time.localtime(self.time_modified))
-            return oldest_time
 
+    def get_exif(self, fn):
+        ret = {}
+        i = Image.open(fn)
+        info = i._getexif()
+        for tag, value in info.items():
+            decoded = TAGS.get(tag, tag)
+            ret[decoded] = value
+        return ret
+
+    # TODO: Do this only for images, errors happen if presented with file like MP4
+    # TODO: Test on other images that do not have date_taken
+    # TODO: Find out if this is actualy local time or if it's possible to conver it (changing line 53 to .localtime does not work) 
+    def image_date(self, fn): # -- gracefully stolen from: https://orthallelous.wordpress.com/2015/04/19/extracting-date-and-time-from-images-with-python/ 
+        """Returns the date and time from image(if available)"""
+        TTags = [('DateTimeOriginal', 'SubsecTimeOriginal'),  # when img taken
+        ('DateTimeDigitized', 'SubsecTimeDigitized'),  # when img stored digitally
+        ('DateTime', 'SubsecTime')]  # when img file was changed
+        # for subsecond prec, see doi.org/10.3189/2013JoG12J126 , sect. 2.2, 2.3
+        exif = self.get_exif(self.fn)
+        for i in TTags:
+            dat, sub = exif.get(i[0]), exif.get(i[1], 0)
+            dat = dat[0] if type(dat) == tuple else dat  # PILLOW 3.0 returns tuples now
+            sub = sub[0] if type(sub) == tuple else sub
+            if dat != None: break  # got valid time
+        if dat == None: return  # found no time tags
     
+        # T = datetime.strptime('{}.{}'.format(dat, sub), '%Y:%m:%d %H:%M:%S.%f') # optional float
+        T = time.mktime(time.strptime(dat, '%Y:%m:%d %H:%M:%S')) + float('0.%s' % sub)
+        return T
+
+
+    def find_oldest_time(self):
+        oldest_time = time.strftime('%Y%m%d', time.localtime(min(self.all_times))) # must use .localtime (if .gmtime is used it returns shifted value for some days)
+        return oldest_time
+
+
     def move_to_directory(self):
         CHECK_FOLDER = os.path.isdir(self.oldest_time)
         if not CHECK_FOLDER:
@@ -50,40 +84,6 @@ if user_ready.lower() == "r":
             file = Picture(address = CURRENT_DIR, name=file, time_created = os.path.getctime(file), time_modified = os.path.getmtime(file))
             file.move_to_directory()
             file_count += 1
+            print(f"time_taken{file.time_taken}, time_created {file.time_created}, time_modified{file.time_modified}")
 
-input(f"""
-*woof* I sorted {file_count} files based on the oldest date found in the file for you.
-
-
-           ____,'`-, 
-      _,--'   ,/::.; 
-   ,-'       ,/::,' `---.___        ___,_ 
-   |       ,:';:/        ;'"`;"`--./ ,-^.;--. 
-   |:     ,:';,'         '         `.   ;`   `-. 
-    \:.,:::/;/ -:.                   `  | `     `-. 
-     \:::,'//__.;  ,;  ,  ,  :.`-.   :. |  ;       :. 
-      \,',';/O)^. :'  ;  :   '__` `  :::`.       .:' ) 
-      |,'  |\__,: ;      ;  '/O)`.   :::`;       ' ,' 
-           |`--''            \__,' , ::::(       ,' 
-           `    ,            `--' ,: :::,'\   ,-' 
-            | ,;         ,    ,::'  ,:::   |,' 
-            |,:        .(          ,:::|   ` 
-            ::'_   _   ::         ,::/:| 
-           ,',' `-' \   `.      ,:::/,:| 
-          | : _  _   |   '     ,::,' ::: 
-          | \ O`'O  ,',   ,    :,'   ;:: 
-           \ `-'`--',:' ,' , ,,'      :: 
-            ``:.:.__   ',-','        ::' 
-               `--.__, ,::.         ::' 
-                   |:  ::::.       ::' 
-                   |:  ::::::    ,::' 
-
-
-
-▄▄▌         ▐ ▄  ▄▄ •     ▄▄▌  ▪   ▌ ▐·▄▄▄ .    ▄ •▄  ▄▄▄· ▄▄▄        
-██•  ▪     •█▌▐█▐█ ▀ ▪    ██•  ██ ▪█·█▌▀▄.▀·    █▌▄▌▪▐█ ▀█ ▀▄ █·▪     
-██▪   ▄█▀▄ ▐█▐▐▌▄█ ▀█▄    ██▪  ▐█·▐█▐█•▐▀▀▪▄    ▐▀▀▄·▄█▀▀█ ▐▀▀▄  ▄█▀▄ 
-▐█▌▐▌▐█▌.▐▌██▐█▌▐█▄▪▐█    ▐█▌▐▌▐█▌ ███ ▐█▄▄▌    ▐█.█▌▐█ ▪▐▌▐█•█▌▐█▌.▐▌
-.▀▀▀  ▀█▄▀▪▀▀ █▪·▀▀▀▀     .▀▀▀ ▀▀▀. ▀   ▀▀▀     ·▀  ▀ ▀  ▀ .▀  ▀ ▀█▄▀▪
-
-""")
+input(f"{file_count} files sorted based on the oldest date found in the file.")
