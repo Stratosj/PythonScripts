@@ -8,6 +8,17 @@ from PIL.ExifTags import TAGS
 
 # TODO: Check if same logic applies as in Excel date comparison
 # TODO: Is there any other file date accessible (encoding date? How to access it?)
+# TODO: Test this: https://stackoverflow.com/questions/21355316/getting-metadata-for-mov-video/21395803#21395803
+# import pymediainfo
+# import sys
+
+# media_info = pymediainfo.MediaInfo.parse(sys.argv[1])
+
+# #For the first track - otherwise iterate over each track
+# print(' Encoded date {}'.format(track[0].encoded_date))
+# print(' Tagged date {}'.format(track[0].tagged_date))
+
+
 
 FILE_LIST = os.listdir()
 CURRENT_DIR = os.getcwd()
