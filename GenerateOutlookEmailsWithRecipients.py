@@ -1,43 +1,16 @@
 import win32com.client
 import pandas as pd
 
-# TODO: Make this WINFORM (winform tutorial.py / https://www.youtube.com/watch?v=RFwTk4twaOI&ab_channel=theI.T.Guy)
-# TODO: Strip this of any unnecessary things and make sure you understand what's going on in the code.
+EXCEL_FILE = pd.read_excel(r"C:\Users\HR-training\Desktop\address_list.xlsx")  # File must be unlocked!
+
+MAIL_SUBJECT = 'Employee Satisfaction Survey 2021 - Results'
+
+MAIL_BODY = """Dear colleagues,
+
+"""
 
 
-# # excel_file = pd.read_excel(os.path.abspath(r"C:\Users\HR-training\Documents\Python\AKTION RAW 210101-210131 (All Teams) v1.0.xlsx"))
-EXCEL_FILE = pd.read_excel(r"D:\NEXEN\04 Controlling\HR Dashboard\Simon\HR Dashboard\Source\AKTION RAW 210101-210131 (All Teams) v1.0.xlsx") # File must be unlocked!
-
-# first_filter_choice = input("What teams shall I filter?\n") # Choses which column to filter
-# first_criteria = input(f"What positions shall I filter {first_filter_choice} for?\n")
-# first_criteria_list = first_criteria.split(",") # TODO: Add a while loop.
-# secondary_filter_choice = input("What superiors shall I filter?\n") # Choses which column to filter
-
-
-# # https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.loc.html
-# position_filtered = EXCEL_FILE.loc[first_criteria_list]
-# # FIXME: This doesn't work (should filter by more than one criteria)
-# # FIXME: Exception has occurred: ValueError - ('Lengths must match to compare', (959,), (2,))
-
-# # Filters pandas data frame by required filter
-# position_filtered = position_filtered.loc[position_filtered[secondary_filter_choice] == second_criteria]
-# position_filtered = position_filtered["Osobní číslo"].tolist()  # Transforms DF column results to a list to be used in outlook
-
-# print(position_filtered)
-# # position_filtered = position_filtered["Osobní číslo"].tolist()
-
-# # print(position_filtered)
-
-
-################################################################## OUTLOOK MESSAGE ##################################################################
-
-
-# Hard coded email subject
-MAIL_SUBJECT = 'Předmět zprávy'
-
-# Hard coded email text
-MAIL_BODY = 'Vážení kolegové,'
-
+#TODO: Change to OOP?
 
 def send_outlook_mail(recipients, subject='No Subject', body='Blank', send_or_display='Display', copies=None):
     """
@@ -80,17 +53,13 @@ def send_outlook_mail(recipients, subject='No Subject', body='Blank', send_or_di
         print('Recipient email address - NOT FOUND')
 
 
-# RECIPIENT_DATABASE = [['jiri.stros@nexentire.com', 'simon.soukup@nexentire.com'],
-#                       ['stratosj@gmail.com', 'daniel.fokt@nexentire.com']]
-
 if __name__ == '__main__':
 
     for row in EXCEL_FILE.iterrows():
 
-        print(row.
-        # recipient_list = row
+        print(row
+        recipient_list = row
 
-        # copies_list = ['simon.soukup@nexentire.com']
+        copies_list = ['simon.soukup@nexentire.com']
 
-        # send_outlook_mail(recipients=recipient_list, subject=MAIL_SUBJECT, body=MAIL_BODY, send_or_display='Display',
-        #                   copies=copies_list)
+        send_outlook_mail(recipients=recipient_list, subject=MAIL_SUBJECT, body=MAIL_BODY, send_or_display='Display', copies=copies_list)
