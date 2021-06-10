@@ -86,7 +86,8 @@ if __name__ == "__main__":
 
     layout = [
         [sg.Text("Select file with e-mail addresses.")],
-        [sg.Input(), sg.FileBrowse('FileBrowse', file_types=(("Excel files only", "*.xlsx"),))],
+        [sg.Input(), sg.FileBrowse('FileBrowse', file_types=(
+            ("Excel files only", "*.xlsx"),))],
         [sg.Submit(), sg.Cancel()],
     ]
 
@@ -102,5 +103,6 @@ if __name__ == "__main__":
             file_address = pd.read_excel(file_address)
             MessageBot = Messenger()
             MessageBot.fetch_addresses(excel_file_address=file_address)
-            MessageBot.send_outlook_mail(subject=MAIL_SUBJECT, body=MAIL_BODY, send_option=SEND_OR_DISPLAY)
+            MessageBot.send_outlook_mail(
+                subject=MAIL_SUBJECT, body=MAIL_BODY, send_option=SEND_OR_DISPLAY)
             window.close()
