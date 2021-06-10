@@ -1,6 +1,8 @@
 import os
 import pandas as pd
 
+#TODO: Add posibility to select another folder (PySimpleGUI)
+
 FILE_LIST = os.listdir(".") # Lists current directory when scanning for .xlsx files
 CURRENT_DIR = os.getcwd() # Fetches current working directory to make script working in any computer
 
@@ -59,30 +61,3 @@ while not terminate_program:
     user_quits = input("Do you want to quit? Y/N:\n")
     if user_quits.upper() == "Y":
         terminate_program = True
-
-input("""
-       ..                                   ,--------.
-      / /                                 ,' /.|    /
-    RED'                                ,'    ||   /
-   DWARF                                \     ||  /
-  / /                                    \_____---.  _---.
-  `'                                .--~~~     ---:,'   / \.
-                   ._--~~~--_.    ,'           ---:     | |
-    _--~~~--_    ,'   |    :  `. /   __---~~~~~---'`.   \ /
-  ,:_     ;  `._/     | .  :  ..\--~~         ;   |__~---`
- //  ~~-_. ;   \=   '---'..:     i STARBUG  1  ;    :  \.
-i '~~~~~~' ;    i=               |.....        ;    :...i
-|     ::   ;    |=........            :        ;    :   |
-`.    ::   ;### !=       :       |    :        ;        |
- \)       ;    /=        :      !     :.. _---_         |  
-  `. 0  _--_ ,'~\ :=====;:      /        /     \       .!
-    ~--/    \    `.`.___|:    ,:        |       |    ,'/
-       \_--_/      `~--___--~'  \        \_---_/    / /
-        \,./                     `.    :::\   /    /,'
-         | |                       `-_.   |   | ,_-'
-         ||:                           ~~~(  |'~
-         ||:                               | |
-         ||'                               | |
-       '"~~~"`                           '"~~~"`   FRM
-
-    """)
