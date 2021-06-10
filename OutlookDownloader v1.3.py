@@ -1,7 +1,9 @@
 import os
 import win32com.client
-import random
-import tkinter
+
+#TODO: Make this OOP and much easier to read.
+#TODO: Remove unnecessary variables
+#TODO: Make a simple GUI or tkinter
 
 path = os.getcwd()
 OUTLOOK = win32com.client.Dispatch("Outlook.Application").GetNamespace("MAPI")
@@ -18,20 +20,20 @@ def download_attachments():
             attachments = message.Attachments
             for attachment in message.Attachments:
                 file_name = attachment.FileName
-                renamed_file_name = file_rename(file_name)
-                save_file(attachment, renamed_file_name)
+                renamed_file_name = file_rename(file_name) # defined later
+                save_file(attachment, renamed_file_name) # defined later
                 attachment_list.append(renamed_file_name)
 
-                
+
 def file_rename(original_file_name):
     """Renames files that were already downloaded before.
-    Also removes any banned characters (["#", ","]) 
+    Also removes any banned characters (["#", ",", "&"]) 
     Takes original file name as input.
     """
     original_file_name = original_file_name.lower()
-    banned_characters = ["#", ","]
+    BANNED_CHARACTERS = ["#", ",", "&"]
     for letter in original_file_name:
-        if letter in banned_characters:
+        if letter in BANNED_CHARACTERS:
             letter_index = original_file_name.index(letter)
             new_character = '_'
             original_file_name = original_file_name[:letter_index] + new_character + original_file_name[letter_index+1:]
