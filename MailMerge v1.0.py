@@ -10,6 +10,7 @@
 #TODO: Test with outlook, pdf etc.
 #TODO: Create simple GUI
 #TODO: Add options for output
+#TODO: Split generate_letters() into more functions, make it more clear to read
 
 ####################### CHANGE SETTINGS HERE ######################
 
@@ -37,10 +38,6 @@ class MailMerge():
                 personal_letter = letter.replace("[name]", name)
                 with open(f"{OUTPUT_FOLDER}{name}.txt", "w") as file:
                     file.write(personal_letter)
-
-
-    def replace_names_in_letters(self):
-        pass
 
 
 Robot = MailMerge()
