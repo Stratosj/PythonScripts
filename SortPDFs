@@ -1,0 +1,24 @@
+import os
+import shutil
+
+def scan_and_move_pdfs():
+    # Define the current directory
+    current_dir = os.getcwd()
+    
+    # Define the new directory for PDFs
+    pdf_dir = os.path.join(current_dir, 'PDFs')
+    
+    # Create the new directory if it doesn't exist
+    if not os.path.exists(pdf_dir):
+        os.makedirs(pdf_dir)
+    
+    # Scan for PDF files and move them
+    for filename in os.listdir(current_dir):
+        if filename.lower().endswith('.pdf'):
+            source = os.path.join(current_dir, filename)
+            destination = os.path.join(pdf_dir, filename)
+            shutil.move(source, destination)
+            print(f"Moved: {filename}")
+
+if __name__ == "__main__":
+    scan_and_move_pdfs()
